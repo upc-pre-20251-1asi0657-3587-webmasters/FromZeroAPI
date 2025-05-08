@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Entity
 @Setter
@@ -23,11 +25,14 @@ public class Deliverable extends AuditableAbstractAggregateRoot<Deliverable> {
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime deadline; //format: 2023-08-15T14:30:45
+    private LocalDateTime deadline; //format: "2025-08-15T14:30:45"
 
 
     @Column(nullable = false)
     private DeliverableStatus state;
+
+
+    private String fileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
@@ -52,11 +57,13 @@ public class Deliverable extends AuditableAbstractAggregateRoot<Deliverable> {
         this.deadline= LocalDateTime.parse(command.date());
         this.state=DeliverableStatus.PENDING;
         this.developerDescription =null;
+        this.fileUrl="https://i.scdn.co/image/ab67616d0000b273fb31e9fdfd96144812da8e5f";
         this.project = project;
-        this.orderNumber=1;
+        this.orderNumber=command.orderNumber();
     }
 
     public Deliverable() {
 
     }
+
 }
