@@ -26,8 +26,8 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi.info(new Info()
                 .title("FromZero API")
-                .description("FromZero application REST API documentation.")
-                .version("v1.0.0")
+                .description(applicationDescription)
+                .version(applicationVersion)
                 .license(new License()
                         .name("Apache 2.0")
                         .url("https://springdoc.org")))
