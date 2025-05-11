@@ -82,6 +82,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
     @Override
+
     @Transactional
     public void handle(DeleteProjectCommand command) {
         var project = projectRepository.findById(command.projectId())
