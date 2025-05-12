@@ -244,5 +244,4 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
         return deliverableRepository.saveAll(deliverables);
     }
-
 }
