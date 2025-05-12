@@ -150,7 +150,7 @@ public class DeliverableController {
     @Operation(summary = "Delete Deliverable")
     @DeleteMapping(value = "/{deliverableId}/")
     public ResponseEntity<Void> deleteDeliverable(@PathVariable Long projectId, @PathVariable Long deliverableId) {
-        var deleteDeliverableCommand = new com.fromzero.backend.deliverables.domain.model.commands.DeleteDeliverableCommand(projectId,deliverableId);
+        var deleteDeliverableCommand = new DeleteDeliverableCommand(projectId,deliverableId);
         this.deliverableCommandService.handle(deleteDeliverableCommand);
         return ResponseEntity.noContent().build();
     }

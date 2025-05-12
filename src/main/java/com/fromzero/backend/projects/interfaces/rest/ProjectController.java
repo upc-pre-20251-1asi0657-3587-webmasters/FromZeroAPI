@@ -190,7 +190,6 @@ public class ProjectController {
         return ResponseEntity.ok(projectResources);
     }
 
-
     @Operation(summary = "Delete a project by Id")
     @DeleteMapping(value = "/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {

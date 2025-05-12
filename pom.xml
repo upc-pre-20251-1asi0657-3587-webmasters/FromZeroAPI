@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.fromzero.backend</groupId>
 	<artifactId>fromZero-backend</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>fromZero-backend</name>
-	<description>FromZero Monolith Demo</description>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
