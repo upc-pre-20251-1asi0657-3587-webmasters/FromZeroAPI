@@ -50,9 +50,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @JsonManagedReference
     private List<Developer> candidates;
 
-
     //many to many relationship
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "project_programming_languages",
@@ -71,15 +69,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @JsonManagedReference
     private List<Framework> frameworks;
 
-
     private ProjectType type;
-  
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Deliverable> deliverables;
-
-    private String type;
-
 
     @Lob
     @Column(columnDefinition = "TEXT")
@@ -90,7 +80,6 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     private String methodologies;
 
     public Project(CreateProjectCommand command){
-
         this.name=command.name();
         this.description=command.description();
         this.state=ProjectState.LOOKING_FOR_DEVELOPERS;

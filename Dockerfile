@@ -1,5 +1,8 @@
-FROM openjdk:17-jdk-slim
-ARG JAR_FILE=target/fromZero-backend-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app_fromzero.jar
+FROM maven:3-eclipse-temurin-17 as build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-alpine
+COPY --from=build /target/*.jar demo.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app_fromzero.jar"]
+ENTRYPOINT ["java", "-jar", "/demo.jar"]
