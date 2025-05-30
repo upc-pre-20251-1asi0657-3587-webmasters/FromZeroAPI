@@ -45,24 +45,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
     @Override
-    public Optional<Project> handle(UpdateProjectCandidatesListCommand command) {
-        var project = command.project();
-        project.getCandidates().add(command.developer());
-        this.projectRepository.save(project);
-        return Optional.of(project);
-    }
-
-    @Override
-    public Optional<Project> handle(AssignProjectDeveloperCommand command) {
-        var project =command.project();
-        project.setCandidates(command.project().getCandidates());
-        project.getCandidates().clear();
-        project.setState(ProjectState.IN_PROCESS);
-        this.projectRepository.save(project);
-        return Optional.of(project);
-    }
-
-    @Override
     public Optional<Project> handle(UpdateProjectProgressCommand command) {
         var project = command.project();
         project.setProgress(command.progress());

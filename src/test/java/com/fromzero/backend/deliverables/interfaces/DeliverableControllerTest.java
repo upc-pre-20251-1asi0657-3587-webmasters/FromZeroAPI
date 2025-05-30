@@ -19,19 +19,14 @@ import com.fromzero.backend.projects.domain.model.aggregates.ProgrammingLanguage
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
 import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
 import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
-import com.fromzero.backend.projects.interfaces.rest.resources.AssignProjectDeveloperResource;
 import com.fromzero.backend.projects.interfaces.rest.resources.CreateProjectResource;
-import com.fromzero.backend.projects.interfaces.rest.resources.UpdateProjectCandidatesListResource;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
 import com.fromzero.backend.user.domain.model.aggregates.Enterprise;
-import com.fromzero.backend.user.interfaces.acl.ProfileContextFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javax.swing.text.html.Option;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,9 +59,8 @@ class DeliverableControllerTest {
     private Framework framework;
     private Project project;
 
-    private AssignProjectDeveloperResource assignProjectDeveloperResource;
+
     private CreateProjectResource createProjectResource;
-    private UpdateProjectCandidatesListResource updateProjectCandidatesListResource;
 
     private Deliverable deliverable;
     private CreateDeliverableResource createDeliverableResource;

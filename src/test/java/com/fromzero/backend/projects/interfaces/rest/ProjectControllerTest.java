@@ -6,10 +6,7 @@ import com.fromzero.backend.iam.domain.model.aggregates.User;
 import com.fromzero.backend.projects.domain.model.aggregates.Framework;
 import com.fromzero.backend.projects.domain.model.aggregates.ProgrammingLanguage;
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
-import com.fromzero.backend.projects.domain.model.commands.AssignProjectDeveloperCommand;
 import com.fromzero.backend.projects.domain.model.commands.CreateProjectCommand;
-import com.fromzero.backend.projects.domain.model.commands.DeleteProjectCommand;
-import com.fromzero.backend.projects.domain.model.commands.UpdateProjectCandidatesListCommand;
 import com.fromzero.backend.projects.domain.model.queries.*;
 import com.fromzero.backend.projects.domain.services.FrameworksQueryService;
 import com.fromzero.backend.projects.domain.services.ProgrammingLanguagesQueryService;
@@ -17,9 +14,7 @@ import com.fromzero.backend.projects.domain.services.ProjectCommandService;
 import com.fromzero.backend.projects.domain.services.ProjectQueryService;
 import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
 import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
-import com.fromzero.backend.projects.interfaces.rest.resources.AssignProjectDeveloperResource;
 import com.fromzero.backend.projects.interfaces.rest.resources.CreateProjectResource;
-import com.fromzero.backend.projects.interfaces.rest.resources.UpdateProjectCandidatesListResource;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
 import com.fromzero.backend.user.domain.model.aggregates.Enterprise;
 import com.fromzero.backend.user.interfaces.acl.ProfileContextFacade;
@@ -60,9 +55,8 @@ class ProjectControllerTest {
     private Framework framework;
     private Project project;
 
-    private AssignProjectDeveloperResource assignProjectDeveloperResource;
+
     private CreateProjectResource createProjectResource;
-    private UpdateProjectCandidatesListResource updateProjectCandidatesListResource;
 
     private Developer developer;
     private Enterprise enterprise;
@@ -182,31 +176,6 @@ class ProjectControllerTest {
         when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
         assertNotNull(projectController.getProjectById(project.getId()));
     }
-
-//    @Test
-//    void updateProjectCandidatesList() {
-//        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
-//        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
-//        when(projectCommandService.handle(any(UpdateProjectCandidatesListCommand.class))).thenReturn(Optional.of(project));
-//        projectController.updateProjectCandidatesList(project.getId(), developer.getId());
-//        verify(projectCommandService, times(1)).handle(any(UpdateProjectCandidatesListCommand.class));
-//    }
-//
-//    @Test
-//    void setProjectDeveloper() {
-//
-//        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
-//        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
-//        when(projectCommandService.handle(any(AssignProjectDeveloperCommand.class))).thenReturn(Optional.of(project));
-//        projectController.setProjectDeveloper(project.getId(), developer.getId());
-//        verify(projectCommandService, times(1)).handle(any(AssignProjectDeveloperCommand.class));
-//    }
-//
-//    @Test
-//    void getAllProjectsByDeveloperId() {
-//        when(projectQueryService.handle(any(GetAllProjectsByDeveloperIdQuery.class))).thenReturn(List.of(project));
-//        assertNotNull(projectController.getAllProjectsByDeveloperId(developer.getId()));
-//    }
 
     @Test
     void getAllProjectsByEnterpriseId() {

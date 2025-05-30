@@ -58,10 +58,12 @@ public class CandidatesManagementCommandServiceImpl implements CandidateCommandS
                 .orElseThrow(() -> new IllegalArgumentException("Project doesn't exist or not found"));
 
 
+        //to check if the candidate belongs to the project
         if (!Objects.equals(candidate.getProject().getId(), command.projectId())) {
             throw new IllegalArgumentException("Candidate does not belong to the specified project");
         }
 
+        // to check if the project already has a developer assigned
         if (project.getDeveloper() != null) {
             throw new IllegalStateException("This project already has a developer assigned");
         }
