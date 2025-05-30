@@ -183,30 +183,30 @@ class ProjectControllerTest {
         assertNotNull(projectController.getProjectById(project.getId()));
     }
 
-    @Test
-    void updateProjectCandidatesList() {
-        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
-        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
-        when(projectCommandService.handle(any(UpdateProjectCandidatesListCommand.class))).thenReturn(Optional.of(project));
-        projectController.updateProjectCandidatesList(project.getId(), developer.getId());
-        verify(projectCommandService, times(1)).handle(any(UpdateProjectCandidatesListCommand.class));
-    }
-
-    @Test
-    void setProjectDeveloper() {
-
-        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
-        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
-        when(projectCommandService.handle(any(AssignProjectDeveloperCommand.class))).thenReturn(Optional.of(project));
-        projectController.setProjectDeveloper(project.getId(), developer.getId());
-        verify(projectCommandService, times(1)).handle(any(AssignProjectDeveloperCommand.class));
-    }
-
-    @Test
-    void getAllProjectsByDeveloperId() {
-        when(projectQueryService.handle(any(GetAllProjectsByDeveloperIdQuery.class))).thenReturn(List.of(project));
-        assertNotNull(projectController.getAllProjectsByDeveloperId(developer.getId()));
-    }
+//    @Test
+//    void updateProjectCandidatesList() {
+//        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
+//        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
+//        when(projectCommandService.handle(any(UpdateProjectCandidatesListCommand.class))).thenReturn(Optional.of(project));
+//        projectController.updateProjectCandidatesList(project.getId(), developer.getId());
+//        verify(projectCommandService, times(1)).handle(any(UpdateProjectCandidatesListCommand.class));
+//    }
+//
+//    @Test
+//    void setProjectDeveloper() {
+//
+//        when(projectQueryService.handle(any(GetProjectByIdQuery.class))).thenReturn(Optional.of(project));
+//        when(profileContextFacade.getDeveloperByUserId(anyLong())).thenReturn(developer);
+//        when(projectCommandService.handle(any(AssignProjectDeveloperCommand.class))).thenReturn(Optional.of(project));
+//        projectController.setProjectDeveloper(project.getId(), developer.getId());
+//        verify(projectCommandService, times(1)).handle(any(AssignProjectDeveloperCommand.class));
+//    }
+//
+//    @Test
+//    void getAllProjectsByDeveloperId() {
+//        when(projectQueryService.handle(any(GetAllProjectsByDeveloperIdQuery.class))).thenReturn(List.of(project));
+//        assertNotNull(projectController.getAllProjectsByDeveloperId(developer.getId()));
+//    }
 
     @Test
     void getAllProjectsByEnterpriseId() {

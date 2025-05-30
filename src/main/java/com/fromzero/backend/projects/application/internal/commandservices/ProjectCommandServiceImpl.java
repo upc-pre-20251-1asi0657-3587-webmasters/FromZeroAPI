@@ -55,7 +55,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     @Override
     public Optional<Project> handle(AssignProjectDeveloperCommand command) {
         var project =command.project();
-        project.setDeveloper(command.developer());
+        project.setCandidates(command.project().getCandidates());
         project.getCandidates().clear();
         project.setState(ProjectState.IN_PROCESS);
         this.projectRepository.save(project);

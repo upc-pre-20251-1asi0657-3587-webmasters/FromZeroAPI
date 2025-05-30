@@ -1,6 +1,7 @@
 package com.fromzero.backend.projects.domain.model.aggregates;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fromzero.backend.candidatesManagement.domain.model.aggregates.Candidate;
 import com.fromzero.backend.deliverables.domain.model.aggregates.Deliverable;
 import com.fromzero.backend.projects.domain.model.commands.CreateProjectCommand;
 import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
@@ -41,14 +42,9 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "project_candidates",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "developer_id")
-    )
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Developer> candidates;
+    private List<Candidate> candidates;
 
     //many to many relationship
     @ManyToMany(fetch = FetchType.EAGER)

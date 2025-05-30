@@ -1,11 +1,11 @@
 package com.fromzero.backend.projects.interfaces.rest.resources;
 
 
-import com.fromzero.backend.user.domain.model.aggregates.Developer;
+import com.fromzero.backend.candidatesManagement.domain.model.aggregates.Candidate;
 
 import java.util.List;
 
-public record UpdateProjectCandidatesListResource(String name, String description, List<Developer> candidates) {
+public record UpdateProjectCandidatesListResource(String name, String description, List<Candidate> candidates) {
     public UpdateProjectCandidatesListResource {
         if (name == null) {
             System.out.println("name is null");

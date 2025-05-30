@@ -126,56 +126,56 @@ public class ProjectController {
         return ResponseEntity.ok(projectResource);
     }
 
-    @Operation(summary = "Add Candidate to the list of candidates of a Project")
-    @PatchMapping(value = "/{projectId}/add-candidate")
-    public ResponseEntity<UpdateProjectCandidatesListResource>
-    updateProjectCandidatesList(@PathVariable Long projectId,
-                                @RequestBody Long developerUserId) {
-        var getProjectByIdQuery = new GetProjectByIdQuery(projectId);
-        var project = this.projectQueryService.handle(getProjectByIdQuery);
-        if (project.isEmpty()) return ResponseEntity.badRequest().build();
-        //get developer by id, usar developer context facade
-        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
-        if (developer == null) return ResponseEntity.badRequest().build();
-        var updateProjectCandidatesListCommand = new UpdateProjectCandidatesListCommand(developer, project.get());
-        var updatedProject = this.projectCommandService.handle(updateProjectCandidatesListCommand);
-        if (updatedProject.isEmpty()) return ResponseEntity.badRequest().build();
-        //to resource
-        var updatedProjectResource = UpdatedProjectResourceFromEntityAssembler.toResourceFromEntity(updatedProject.get());
-        return ResponseEntity.ok(updatedProjectResource);
-    }
+//    @Operation(summary = "Add Candidate to the list of candidates of a Project")
+//    @PatchMapping(value = "/{projectId}/add-candidate")
+//    public ResponseEntity<UpdateProjectCandidatesListResource>
+//    updateProjectCandidatesList(@PathVariable Long projectId,
+//                                @RequestBody Long developerUserId) {
+//        var getProjectByIdQuery = new GetProjectByIdQuery(projectId);
+//        var project = this.projectQueryService.handle(getProjectByIdQuery);
+//        if (project.isEmpty()) return ResponseEntity.badRequest().build();
+//        //get developer by id, usar developer context facade
+//        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
+//        if (developer == null) return ResponseEntity.badRequest().build();
+//        var updateProjectCandidatesListCommand = new UpdateProjectCandidatesListCommand(developer, project.get());
+//        var updatedProject = this.projectCommandService.handle(updateProjectCandidatesListCommand);
+//        if (updatedProject.isEmpty()) return ResponseEntity.badRequest().build();
+//        //to resource
+//        var updatedProjectResource = UpdatedProjectResourceFromEntityAssembler.toResourceFromEntity(updatedProject.get());
+//        return ResponseEntity.ok(updatedProjectResource);
+//    }
 
-    @Operation(summary = "Assign Developer to a Project")
-    @PatchMapping(value = "/{projectId}/assign-developer")
-    public ResponseEntity<AssignProjectDeveloperResource>
-    setProjectDeveloper(@PathVariable Long projectId,
-                        @RequestBody Long developerUserId) {
-        var getProjectByIdQuery = new GetProjectByIdQuery(projectId);
-        var project = this.projectQueryService.handle(getProjectByIdQuery);
-        if (project.isEmpty()) return ResponseEntity.badRequest().build();
-        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
-        if (developer == null) return ResponseEntity.badRequest().build();
-        var assignProjectDeveloperCommand= new AssignProjectDeveloperCommand(project.get(),developer);
-        var updatedProject = this.projectCommandService.handle(assignProjectDeveloperCommand);
-        if (updatedProject.isEmpty()) return ResponseEntity.badRequest().build();
-        var updatedProjectResource = AssignedProjectDeveloperResourceFromEntityAssembler
-                .toResourceFromEntity(updatedProject.get());
-        return ResponseEntity.ok(updatedProjectResource);
-    }
+//    @Operation(summary = "Assign Developer to a Project")
+//    @PatchMapping(value = "/{projectId}/assign-developer")
+//    public ResponseEntity<AssignProjectDeveloperResource>
+//    setProjectDeveloper(@PathVariable Long projectId,
+//                        @RequestBody Long developerUserId) {
+//        var getProjectByIdQuery = new GetProjectByIdQuery(projectId);
+//        var project = this.projectQueryService.handle(getProjectByIdQuery);
+//        if (project.isEmpty()) return ResponseEntity.badRequest().build();
+//        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
+//        if (developer == null) return ResponseEntity.badRequest().build();
+//        var assignProjectDeveloperCommand= new AssignProjectDeveloperCommand(project.get(),developer);
+//        var updatedProject = this.projectCommandService.handle(assignProjectDeveloperCommand);
+//        if (updatedProject.isEmpty()) return ResponseEntity.badRequest().build();
+//        var updatedProjectResource = AssignedProjectDeveloperResourceFromEntityAssembler
+//                .toResourceFromEntity(updatedProject.get());
+//        return ResponseEntity.ok(updatedProjectResource);
+//    }
 
-    @Operation(summary = "Get All Projects By Developer Id")
-    @GetMapping(value = "/developer/{developerUserId}")
-    public ResponseEntity<List<ProjectResource>> getAllProjectsByDeveloperId(@PathVariable Long developerUserId){
-        //get developer con el facade
-        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
-        if(developer==null) return ResponseEntity.badRequest().build();
-        var getProjectsByDeveloperIdQuery = new GetAllProjectsByDeveloperIdQuery(developer);
-        var projects=this.projectQueryService.handle(getProjectsByDeveloperIdQuery);
-        var projectsResources = projects.stream()
-                .map(ProjectResourceFromEntityAssembler::toResourceFromEntity)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(projectsResources);
-    }
+//    @Operation(summary = "Get All Projects By Developer Id")
+//    @GetMapping(value = "/developer/{developerUserId}")
+//    public ResponseEntity<List<ProjectResource>> getAllProjectsByDeveloperId(@PathVariable Long developerUserId){
+//        //get developer con el facade
+//        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
+//        if(developer==null) return ResponseEntity.badRequest().build();
+//        var getProjectsByDeveloperIdQuery = new GetAllProjectsByDeveloperIdQuery(developer);
+//        var projects=this.projectQueryService.handle(getProjectsByDeveloperIdQuery);
+//        var projectsResources = projects.stream()
+//                .map(ProjectResourceFromEntityAssembler::toResourceFromEntity)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(projectsResources);
+//    }
 
     @Operation(summary = "Get All Projects By Enterprise Id")
     @GetMapping(value = "/enterprise/{enterpriseUserId}")

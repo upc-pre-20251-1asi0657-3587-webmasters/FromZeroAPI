@@ -1,14 +1,14 @@
 package com.fromzero.backend.projects.interfaces.rest.resources;
 
 
+import com.fromzero.backend.candidatesManagement.domain.model.aggregates.Candidate;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public record AssignProjectDeveloperResource(
         String name, String description, String state,
-        Developer developer, List<Developer> candidates) {
+        Developer developer, List<Candidate> candidates) {
 
     public AssignProjectDeveloperResource{
         if(state==null){
