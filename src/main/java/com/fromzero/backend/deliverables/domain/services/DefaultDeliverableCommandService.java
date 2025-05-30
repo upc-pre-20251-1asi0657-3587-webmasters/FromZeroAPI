@@ -4,4 +4,5 @@ import com.fromzero.backend.deliverables.domain.model.commands.SeedDefaultDelive
 
 public interface DefaultDeliverableCommandService {
     void handle(SeedDefaultDeliverablesCommand command);
+
 }

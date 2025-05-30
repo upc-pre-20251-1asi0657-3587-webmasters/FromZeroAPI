@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface DefaultDeliverableRepository extends JpaRepository<DefaultDeliverable, Long> {
 
+    List<DefaultDeliverable> findByProjectType(ProjectType projectType);
+
     int countByProjectType(ProjectType projectType);
 }

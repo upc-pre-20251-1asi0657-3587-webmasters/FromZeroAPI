@@ -8,6 +8,7 @@ import com.fromzero.backend.deliverables.domain.model.aggregates.Deliverable;
 import com.fromzero.backend.deliverables.domain.model.commands.*;
 import com.fromzero.backend.deliverables.domain.services.DeliverableCommandService;
 import com.fromzero.backend.deliverables.domain.valueobjects.DeliverableStatus;
+import com.fromzero.backend.deliverables.infrastructure.persistence.jpa.repositories.DefaultDeliverableRepository;
 import com.fromzero.backend.deliverables.infrastructure.persistence.jpa.repositories.DeliverableRepository;
 import com.fromzero.backend.projects.application.internal.commandservices.ProjectCommandServiceImpl;
 import com.fromzero.backend.projects.domain.model.commands.UpdateProjectProgressCommand;
@@ -20,11 +21,16 @@ import java.util.Optional;
 
 @Service
 public class DeliverableCommandServiceImpl implements DeliverableCommandService {
-    private final DeliverableRepository deliverableRepository;
     private final ProjectRepository projectRepository;
-    public DeliverableCommandServiceImpl(DeliverableRepository deliverableRepository, ProjectRepository projectRepository) {
-        this.deliverableRepository = deliverableRepository;
+    private final DeliverableRepository deliverableRepository;
+    private final DefaultDeliverableRepository defaultDeliverableRepository;
+
+    public DeliverableCommandServiceImpl(ProjectRepository projectRepository,
+                                     DeliverableRepository deliverableRepository,
+                                     DefaultDeliverableRepository defaultDeliverableRepository) {
         this.projectRepository = projectRepository;
+        this.deliverableRepository = deliverableRepository;
+        this.defaultDeliverableRepository = defaultDeliverableRepository;
     }
 
     @Override
@@ -158,7 +164,7 @@ public class DeliverableCommandServiceImpl implements DeliverableCommandService 
             deliverable.get().setState(DeliverableStatus.APPROVED);
             var project = deliverable.get().getProject();
             var updateCommand = new UpdateProjectProgressCommand(project, project.getProgress());
-            new ProjectCommandServiceImpl(projectRepository, deliverableRepository).handle(updateCommand);
+            new ProjectCommandServiceImpl(projectRepository, deliverableRepository, defaultDeliverableRepository).handle(updateCommand);
             //System.out.println("El proyecto es: "+deliverable.get().getProject().getProgress().toString());
         }else deliverable.get().setState(DeliverableStatus.REJECTED);
         this.deliverableRepository.save(deliverable.get());
