@@ -31,10 +31,10 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
         return this.projectRepository.findById(query.id());
     }
 
-    @Override
-    public List<Project> handle(GetAllProjectsByDeveloperIdQuery query) {
-        return this.projectRepository.findAllByDeveloperOrCandidate(query.developer());
-    }
+//    @Override
+//    public List<Project> handle(GetAllProjectsByDeveloperIdQuery query) {
+//        return this.projectRepository.findAllCandidatesByProjectId(query.developer());
+//    }
 
     @Override
     public List<Project> handle(GetAllProjectsByEnterpriseIdQuery query) {

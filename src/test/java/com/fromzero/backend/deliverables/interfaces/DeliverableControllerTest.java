@@ -17,21 +17,16 @@ import com.fromzero.backend.iam.domain.model.aggregates.User;
 import com.fromzero.backend.projects.domain.model.aggregates.Framework;
 import com.fromzero.backend.projects.domain.model.aggregates.ProgrammingLanguage;
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
-import com.fromzero.backend.projects.interfaces.rest.resources.AssignProjectDeveloperResource;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectStateEnum;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import com.fromzero.backend.projects.interfaces.rest.resources.CreateProjectResource;
-import com.fromzero.backend.projects.interfaces.rest.resources.UpdateProjectCandidatesListResource;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
 import com.fromzero.backend.user.domain.model.aggregates.Enterprise;
-import com.fromzero.backend.user.interfaces.acl.ProfileContextFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javax.swing.text.html.Option;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,9 +59,8 @@ class DeliverableControllerTest {
     private Framework framework;
     private Project project;
 
-    private AssignProjectDeveloperResource assignProjectDeveloperResource;
+
     private CreateProjectResource createProjectResource;
-    private UpdateProjectCandidatesListResource updateProjectCandidatesListResource;
 
     private Deliverable deliverable;
     private CreateDeliverableResource createDeliverableResource;
@@ -144,9 +138,9 @@ class DeliverableControllerTest {
         project.setId(1L);
         project.setName("Project A");
         project.setDescription("Description of Project A");
-        project.setState(ProjectState.LOOKING_FOR_DEVELOPERS);
+        project.setState(ProjectStateEnum.LOOKING_FOR_DEVELOPERS);
         project.setProgress(0.0);
-        project.setType(ProjectType.MOBILE_APPLICATION);
+        project.setType(ProjectTypeEnum.MOBILE_APPLICATION);
         project.setBudget("1000");
         project.setMethodologies("Agile");
         project.setEnterprise(enterprise);

@@ -38,14 +38,10 @@ public class Deliverable extends AuditableAbstractAggregateRoot<Deliverable> {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @Setter
     @Lob
     @Column(columnDefinition = "TEXT")
     private String developerDescription;
 
-
-    @Setter
-    @Getter
     @Column(nullable = false)
     private int orderNumber;
 

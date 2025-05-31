@@ -1,0 +1,76 @@
+package com.fromzero.backend.candidatesManagement.interfaces.rest;
+
+
+import com.fromzero.backend.candidatesManagement.domain.model.commands.ApplyToProjectCommand;
+import com.fromzero.backend.candidatesManagement.domain.model.commands.SelectCandidateCommand;
+import com.fromzero.backend.candidatesManagement.domain.model.queries.GetAllCandidatesByProjectIdQuery;
+import com.fromzero.backend.candidatesManagement.domain.services.CandidateCommandService;
+import com.fromzero.backend.candidatesManagement.domain.services.CandidateQueryService;
+import com.fromzero.backend.candidatesManagement.interfaces.rest.resources.ApplyToProjectResource;
+import com.fromzero.backend.candidatesManagement.interfaces.rest.resources.CandidateResource;
+import com.fromzero.backend.candidatesManagement.interfaces.rest.transform.CandidateResourceFromEntityAssembler;
+import com.fromzero.backend.projects.domain.services.ProjectQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@RestController
+@RequestMapping(value = "/api/v1/candidates-management", produces = APPLICATION_JSON_VALUE)
+@Tag(name="Candidates Management", description = "Endpoints for managing candidates for each project")
+public class CandidatesManagementController {
+    private final CandidateCommandService candidateCommandService;
+    private final CandidateQueryService candidateQueryService;
+
+
+    public CandidatesManagementController (CandidateCommandService candidateCommandService,
+                                            CandidateQueryService candidateQueryService) {
+        this.candidateCommandService = candidateCommandService;
+        this.candidateQueryService = candidateQueryService;
+    }
+
+    @Operation(summary = "Get all candidates by projectId")
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<List<CandidateResource>> getAllCandidatesByProjectId(@PathVariable Long projectId) {
+        var query = new GetAllCandidatesByProjectIdQuery(projectId);
+        var candidates = candidateQueryService.handle(query);
+
+        var candidateResources = candidates.stream()
+                .map(CandidateResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(candidateResources);
+    }
+
+
+    @Operation(summary = "Select a candidate for a project")
+    @PatchMapping("/project/{projectId}/candidate/{candidateId}/select")
+    public ResponseEntity<CandidateResource> selectCandidate(@PathVariable Long projectId, @PathVariable Long candidateId) {
+        var command = new SelectCandidateCommand(candidateId, projectId);
+        var candidate = candidateCommandService.handle(command);
+        if (candidate.isEmpty()) return ResponseEntity.badRequest().build();
+        var candidateResource = CandidateResourceFromEntityAssembler.toResourceFromEntity(candidate.get());
+        return ResponseEntity.ok(candidateResource);
+    }
+
+
+    @Operation(summary = "Apply to a project")
+    @PostMapping("/project/{projectId}/apply")
+    public ResponseEntity<CandidateResource> applyToProject(@PathVariable Long projectId, @RequestBody ApplyToProjectResource resource) {
+        var command = new ApplyToProjectCommand(resource.developerId(), projectId);
+        var candidate = candidateCommandService.handle(command);
+        if (candidate.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var candidateResource = CandidateResourceFromEntityAssembler.toResourceFromEntity(candidate.get());
+        return ResponseEntity.status(HttpStatus.CREATED).body(candidateResource);
+    }
+
+}
+
