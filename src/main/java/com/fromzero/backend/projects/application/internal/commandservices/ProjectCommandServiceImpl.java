@@ -62,7 +62,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             // to create de deadline date
             String deadline = today.plusWeeks(d.getWeeksToComplete()).format(formatter) + "T23:59:59";
 
-            CreateDeliverableCommand deliverable = new CreateDeliverableCommand(
+            CreateDeliverableCommand deliverableCommand  = new CreateDeliverableCommand(
                     d.getName(),
                     d.getDescription(),
                     deadline,
@@ -70,7 +70,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                     d.getOrderNumber()
             );
 
-            return new Deliverable(deliverable, project);
+            Deliverable deliverable = new Deliverable(deliverableCommand, project);
+            deliverableRepository.save(deliverable);
+            return deliverable;
+
         }).toList();
     }
 
