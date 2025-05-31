@@ -88,4 +88,30 @@ class CandidatesManagementControllerTest {
         assertNotNull(candidatesManagementController.applyToProject(project.getId(), resource));
     }
 
+    @Test
+    void applyToProjectAndSelectCandidateIntegration() {
+        // Arrange
+        ApplyToProjectResource resource = new ApplyToProjectResource(developer.getId());
+
+        when(candidateCommandService.handle(any(ApplyToProjectCommand.class)))
+                .thenReturn(Optional.of(candidate));
+        when(candidateCommandService.handle(any(SelectCandidateCommand.class)))
+                .thenReturn(Optional.of(candidate));
+
+        // Act
+        var appliedCandidateResponse = candidatesManagementController.applyToProject(project.getId(), resource);
+        var selectedCandidateResponse = candidatesManagementController.selectCandidate(project.getId(), candidate.getId());
+
+        // Assert
+        assertNotNull(appliedCandidateResponse);
+        assertNotNull(selectedCandidateResponse);
+        assertEquals(candidate.getDeveloper().getFirstName(), appliedCandidateResponse.getBody().firstName());
+        assertEquals(candidate.getDeveloper().getFirstName(), selectedCandidateResponse.getBody().firstName());
+        assertEquals(candidate.getProject().getId(), appliedCandidateResponse.getBody().projectId());
+        assertEquals(candidate.getProject().getId(), selectedCandidateResponse.getBody().projectId());
+    }
+
+
+
+
 }
