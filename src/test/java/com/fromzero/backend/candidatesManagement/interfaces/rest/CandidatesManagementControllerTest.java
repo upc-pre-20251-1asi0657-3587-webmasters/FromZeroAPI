@@ -61,7 +61,7 @@ class CandidatesManagementControllerTest {
     @Test
     void getAllCandidatesByProjectId() {
         when(candidateQueryService.handle(any(GetAllCandidatesByProjectIdQuery.class)))
-                .thenReturn(List.of(new Candidate(developer, project)));
+                .thenReturn(List.of(candidate));
 
         assertNotNull(candidatesManagementController.getAllCandidatesByProjectId(project.getId()));
     }
@@ -69,7 +69,6 @@ class CandidatesManagementControllerTest {
 
     @Test
     void selectCandidate() {
-        Candidate candidate = new Candidate(developer, project);
         when(candidateCommandService.handle(any(SelectCandidateCommand.class)))
                 .thenReturn(Optional.of(candidate));
 
@@ -80,8 +79,6 @@ class CandidatesManagementControllerTest {
     @Test
     void applyToProject() {
         ApplyToProjectResource resource = new ApplyToProjectResource(developer.getId());
-        Candidate candidate = new Candidate(developer, project);
-
         when(candidateCommandService.handle(any(ApplyToProjectCommand.class)))
                 .thenReturn(Optional.of(candidate));
 
