@@ -2,10 +2,10 @@ package com.fromzero.backend.projects.domain.model.aggregates;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fromzero.backend.candidatesManagement.domain.model.aggregates.Candidate;
-import com.fromzero.backend.deliverables.domain.model.aggregates.Deliverable;
 import com.fromzero.backend.projects.domain.model.commands.CreateProjectCommand;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
+import com.fromzero.backend.projects.domain.state.*;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectStateEnum;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import com.fromzero.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
 import com.fromzero.backend.user.domain.model.aggregates.Enterprise;
@@ -28,7 +28,8 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     private String description;
 
     @Setter
-    private ProjectState state;
+    private ProjectStateEnum state;
+
 
     @Setter
     private Double progress;
@@ -65,7 +66,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @JsonManagedReference
     private List<Framework> frameworks;
 
-    private ProjectType type;
+    private ProjectTypeEnum type;
 
     @Lob
     @Column(columnDefinition = "TEXT")
@@ -78,7 +79,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     public Project(CreateProjectCommand command){
         this.name=command.name();
         this.description=command.description();
-        this.state=ProjectState.LOOKING_FOR_DEVELOPERS;
+        this.state= ProjectStateEnum.LOOKING_FOR_DEVELOPERS;
         this.progress=0.0;
         this.enterprise=command.enterprise();
         this.developer=null;
@@ -91,5 +92,15 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     }
 
     public Project() {
+    }
+
+    @Transient
+    public ProjectState getStateHandler() {
+        return switch (this.state) {
+            case LOOKING_FOR_DEVELOPERS -> new LookingForDeveloperState();
+            case NOT_STARTED -> new NotStartedState();
+            case IN_PROCESS -> new InProcessState();
+            case COMPLETED -> new CompletedState();
+        };
     }
 }

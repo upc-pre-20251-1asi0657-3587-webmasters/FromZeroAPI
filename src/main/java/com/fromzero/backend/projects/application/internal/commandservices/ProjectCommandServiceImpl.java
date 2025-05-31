@@ -9,20 +9,16 @@ import com.fromzero.backend.deliverables.infrastructure.persistence.jpa.reposito
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
 import com.fromzero.backend.projects.domain.model.commands.*;
 import com.fromzero.backend.projects.domain.services.ProjectCommandService;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectStateEnum;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import com.fromzero.backend.projects.infrastructure.persistence.jpa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectCommandServiceImpl implements ProjectCommandService {
@@ -56,8 +52,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
 
-    private List<Deliverable> addDefaultDeliverables(ProjectType projectType, Project project) {
-        List<DefaultDeliverable> defaults = defaultDeliverableRepository.findByProjectType(projectType);
+    private List<Deliverable> addDefaultDeliverables(ProjectTypeEnum projectTypeEnum, Project project) {
+        List<DefaultDeliverable> defaults = defaultDeliverableRepository.findByProjectTypeEnum(projectTypeEnum);
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -66,7 +62,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             // to create de deadline date
             String deadline = today.plusWeeks(d.getWeeksToComplete()).format(formatter) + "T23:59:59";
 
-            CreateDeliverableCommand cmd = new CreateDeliverableCommand(
+            CreateDeliverableCommand deliverable = new CreateDeliverableCommand(
                     d.getName(),
                     d.getDescription(),
                     deadline,
@@ -74,7 +70,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                     d.getOrderNumber()
             );
 
-            return new Deliverable(cmd, project);
+            return new Deliverable(deliverable, project);
         }).toList();
     }
 
@@ -92,7 +88,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                 });
 
         if (allDeliverablesApproved) {
-            project.setState(ProjectState.COMPLETED);
+            project.getStateHandler().completeProject(project);
+            //project.setState(ProjectStateEnum.COMPLETED);
         }
 
         this.projectRepository.save(project);
@@ -107,7 +104,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
 
         //if the project's state is COMPLETED or IN PROCESS
-        if (project.getState() == ProjectState.COMPLETED || project.getState() == ProjectState.IN_PROCESS) {
+        if (project.getState() == ProjectStateEnum.COMPLETED || project.getState() == ProjectStateEnum.IN_PROCESS) {
             throw new IllegalArgumentException("Cannot delete a completed or an in process project");
         }
 

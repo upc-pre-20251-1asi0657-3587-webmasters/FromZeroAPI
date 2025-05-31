@@ -1,6 +1,6 @@
 package com.fromzero.backend.deliverables.domain.model.aggregates;
 
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ public class DefaultDeliverable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProjectType projectType;
+    private ProjectTypeEnum projectTypeEnum;
 
     @Column(nullable = false)
     private String name;
@@ -34,8 +34,8 @@ public class DefaultDeliverable {
 
     public DefaultDeliverable() {}
 
-    public DefaultDeliverable(ProjectType projectType, String name, String description, int weeksToComplete, int orderNumber) {
-        this.projectType = projectType;
+    public DefaultDeliverable(ProjectTypeEnum projectTypeEnum, String name, String description, int weeksToComplete, int orderNumber) {
+        this.projectTypeEnum = projectTypeEnum;
         this.name = name;
         this.description = description;
         this.weeksToComplete = weeksToComplete;

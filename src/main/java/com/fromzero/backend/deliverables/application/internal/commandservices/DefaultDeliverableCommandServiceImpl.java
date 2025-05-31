@@ -3,10 +3,8 @@ package com.fromzero.backend.deliverables.application.internal.commandservices;
 import com.fromzero.backend.deliverables.domain.model.aggregates.DefaultDeliverable;
 import com.fromzero.backend.deliverables.domain.model.commands.SeedDefaultDeliverablesCommand;
 import com.fromzero.backend.deliverables.domain.services.DefaultDeliverableCommandService;
-import com.fromzero.backend.deliverables.domain.services.DeliverableCommandService;
 import com.fromzero.backend.deliverables.infrastructure.persistence.jpa.repositories.DefaultDeliverableRepository;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
-import org.springframework.context.event.EventListener;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class DefaultDeliverableCommandServiceImpl implements DefaultDeliverableC
 
     @Override
     public void handle(SeedDefaultDeliverablesCommand command) {
-        ProjectType type = command.projectType();
+        ProjectTypeEnum type = command.projectTypeEnum();
         List<DefaultDeliverable> deliverables = new ArrayList<>();
 
         switch (type) {
@@ -70,7 +68,7 @@ public class DefaultDeliverableCommandServiceImpl implements DefaultDeliverableC
         }
 
         // to avoid duplicates every time the project is executed. Check if there are already deliverables for the project type, if not, save the default deliverables
-        if (defaultDeliverableRepository.countByProjectType(type) == 0) {
+        if (defaultDeliverableRepository.countByProjectTypeEnum(type) == 0) {
             defaultDeliverableRepository.saveAll(deliverables);
         }
 

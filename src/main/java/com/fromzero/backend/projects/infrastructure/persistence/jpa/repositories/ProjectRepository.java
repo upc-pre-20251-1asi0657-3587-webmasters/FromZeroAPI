@@ -3,7 +3,7 @@ package com.fromzero.backend.projects.infrastructure.persistence.jpa.repositorie
 
 import com.fromzero.backend.candidatesManagement.domain.model.aggregates.Candidate;
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectStateEnum;
 import com.fromzero.backend.user.domain.model.aggregates.Developer;
 import com.fromzero.backend.user.domain.model.aggregates.Enterprise;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    List<Project> findAllByState(ProjectState state);
+    List<Project> findAllByState(ProjectStateEnum state);
     List<Project> findAllByDeveloper(Developer developer);
     List<Project> findAllByEnterprise(Enterprise enterprise);
 

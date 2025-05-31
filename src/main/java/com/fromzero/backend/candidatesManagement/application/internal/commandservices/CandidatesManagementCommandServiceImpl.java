@@ -71,6 +71,8 @@ public class CandidatesManagementCommandServiceImpl implements CandidateCommandS
         candidate.setSelected(true);
         project.setDeveloper(candidate.getDeveloper());
 
+       project.getStateHandler().startProject(project);
+
         candidateRepository.save(candidate);
         projectRepository.save(project);
 

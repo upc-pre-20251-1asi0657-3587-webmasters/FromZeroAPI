@@ -1,6 +1,6 @@
 package com.fromzero.backend.projects.domain.valueobjects;
 
-public enum ProjectType {
+public enum ProjectTypeEnum {
     LANDING_PAGE,
     ECOMMERCE,
     ONE_PAGE_WEBSITE,

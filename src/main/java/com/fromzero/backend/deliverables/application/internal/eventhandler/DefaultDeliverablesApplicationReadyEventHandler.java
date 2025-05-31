@@ -2,7 +2,7 @@ package com.fromzero.backend.deliverables.application.internal.eventhandler;
 
 import com.fromzero.backend.deliverables.domain.model.commands.SeedDefaultDeliverablesCommand;
 import com.fromzero.backend.deliverables.domain.services.DefaultDeliverableCommandService;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -25,7 +25,7 @@ public class DefaultDeliverablesApplicationReadyEventHandler {
         var appName = event.getApplicationContext().getApplicationName();
         LOGGER.info("----------- Seeding default deliverables for Application {} -----------", appName);
 
-        for (ProjectType type : ProjectType.values()) {
+        for (ProjectTypeEnum type : ProjectTypeEnum.values()) {
             defaultDeliverableCommandService.handle(new SeedDefaultDeliverablesCommand(type));
         }
 

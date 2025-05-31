@@ -1,6 +1,6 @@
 package com.fromzero.backend.deliverables.domain.model.commands;
 
-import com.fromzero.backend.projects.domain.valueobjects.ProjectType;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectTypeEnum;
 
-public record SeedDefaultDeliverablesCommand(ProjectType projectType) {
+public record SeedDefaultDeliverablesCommand(ProjectTypeEnum projectTypeEnum) {
 }

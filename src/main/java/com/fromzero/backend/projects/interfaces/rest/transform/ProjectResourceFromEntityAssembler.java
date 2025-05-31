@@ -2,13 +2,13 @@ package com.fromzero.backend.projects.interfaces.rest.transform;
 
 
 import com.fromzero.backend.projects.domain.model.aggregates.Project;
-import com.fromzero.backend.projects.domain.valueobjects.ProjectState;
+import com.fromzero.backend.projects.domain.valueobjects.ProjectStateEnum;
 import com.fromzero.backend.projects.interfaces.rest.resources.ProjectResource;
 
 public class ProjectResourceFromEntityAssembler {
     public static ProjectResource toResourceFromEntity(Project entity){
         //varios if con validaciones para hacer un return
-        if(entity.getState()== ProjectState.LOOKING_FOR_DEVELOPERS){
+        if(entity.getState()== ProjectStateEnum.LOOKING_FOR_DEVELOPERS){
             /*
              * Get Project Resource where State is "En busqueda"
              * Returns ProjectResource
@@ -19,7 +19,7 @@ public class ProjectResourceFromEntityAssembler {
                     entity.getBudget(),entity.getMethodologies());
         }
 
-        if(entity.getState()== ProjectState.IN_PROCESS){
+        if(entity.getState()== ProjectStateEnum.IN_PROCESS){
             return new ProjectResource(entity.getId(),entity.getName(),entity.getDescription(),
                     entity.getState().name(), entity.getProgress(),entity.getEnterprise().getId(),
                     entity.getDeveloper().getId(),entity.getCandidates(),
@@ -27,7 +27,7 @@ public class ProjectResourceFromEntityAssembler {
                     entity.getBudget(),entity.getMethodologies());
         }
 
-        if (entity.getState() == ProjectState.COMPLETED) {
+        if (entity.getState() == ProjectStateEnum.COMPLETED) {
             return new ProjectResource(entity.getId(), entity.getName(), entity.getDescription(),
                     entity.getState().name(), entity.getProgress(), entity.getEnterprise().getId(),
                     entity.getDeveloper().getId(), entity.getCandidates(),
