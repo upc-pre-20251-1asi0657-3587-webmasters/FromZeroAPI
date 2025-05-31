@@ -5,7 +5,7 @@ public record CandidateResource(
 ) {
     public CandidateResource {
         if (firstName == null) {
-            throw new NullPointerException("name is null");
+            throw new NullPointerException("Firstname is null");
         }
         if (lastName == null) {
             throw new NullPointerException("lastName is null");

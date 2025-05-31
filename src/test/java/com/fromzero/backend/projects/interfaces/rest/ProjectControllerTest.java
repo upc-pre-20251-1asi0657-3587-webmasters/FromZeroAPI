@@ -1,5 +1,7 @@
 package com.fromzero.backend.projects.interfaces.rest;
 
+import com.fromzero.backend.candidatesManagement.application.internal.commandservices.CandidatesManagementCommandServiceImpl;
+import com.fromzero.backend.candidatesManagement.domain.services.CandidateCommandService;
 import com.fromzero.backend.iam.domain.model.entities.Role;
 import com.fromzero.backend.iam.domain.model.valueobjects.Roles;
 import com.fromzero.backend.iam.domain.model.aggregates.User;
@@ -43,6 +45,8 @@ class ProjectControllerTest {
     private FrameworksQueryService frameworksQueryService;
     @Mock
     private ProgrammingLanguagesQueryService programmingLanguagesQueryService;
+
+    private CandidateCommandService candidatesManagementService;
 
     @Mock
     private ProjectCommandService projectCommandService;
@@ -204,6 +208,8 @@ class ProjectControllerTest {
         assertNotNull(fetchedProjectResponse);
         assertEquals(project.getName(), fetchedProjectResponse.getBody().name());
         assertEquals(project.getDescription(), fetchedProjectResponse.getBody().description());
-        assertEquals(project.getType(), fetchedProjectResponse.getBody().type());
+        assertEquals(ProjectTypeEnum.valueOf(fetchedProjectResponse.getBody().type()), project.getType());
     }
+
+
 }
