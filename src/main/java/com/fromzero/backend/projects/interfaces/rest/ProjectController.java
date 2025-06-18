@@ -131,6 +131,20 @@ public class ProjectController {
         return ResponseEntity.ok(projectResources);
     }
 
+    @Operation(summary = "Get All Projects By Developer Id")
+    @GetMapping(value = "/developer/{developerUserId}")
+    public ResponseEntity<List<ProjectResource>> getAllProjectsByDeveloperId(@PathVariable Long developerUserId){
+        //get developer con el facade
+        var developer = this.profileContextFacade.getDeveloperByUserId(developerUserId);
+        if(developer==null) return ResponseEntity.badRequest().build();
+        var getProjectsByDeveloperIdQuery = new GetAllProjectsByDeveloperIdQuery(developer);
+        var projects=this.projectQueryService.handle(getProjectsByDeveloperIdQuery);
+        var projectsResources = projects.stream()
+                .map(ProjectResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(projectsResources);
+    }
+
     @Operation(summary = "Delete a project by Id")
     @DeleteMapping(value = "/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
