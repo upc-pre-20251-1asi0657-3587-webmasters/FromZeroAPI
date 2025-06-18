@@ -43,9 +43,8 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Candidate> candidates;
+    @Column
+    private List<String> candidates = new ArrayList<>();
 
     //many to many relationship
     @ManyToMany(fetch = FetchType.EAGER)
